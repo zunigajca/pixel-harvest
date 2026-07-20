@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-card">
+    <p class="eyebrow">YOUR NEW FARM AWAITS</p>
+    <h1>SIGN UP</h1>
+    <form method="POST" class="pixel-form">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" class="pixel-input" maxlength="30" autocomplete="username" required>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" class="pixel-input" minlength="6" autocomplete="new-password" required>
+        <button type="submit" class="pixel-button pixel-button-primary">Claim your farm</button>
+    </form>
+    <p class="form-footnote">Already farming? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+</section>
+{% endblock %}

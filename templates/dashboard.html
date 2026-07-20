@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="game-container" id="game" data-crop-id="{{ carrot.id if carrot else 1 }}">
+    <aside class="sidebar">
+        <p class="eyebrow">YOUR HOMESTEAD</p>
+        <h1>PIXEL<br>HARVEST</h1>
+        <p class="farmer-name">{{ current_user.username }}</p>
+        <div class="stat-box"><span>GOLD</span><strong id="gold">{{ current_user.gold }}</strong></div>
+        <div class="stat-box"><span>LOCAL TIME</span><strong id="device-time">--:--</strong><small id="time-period">SYNCING...</small></div>
+        <div class="inventory"><span>SEED BAG</span><p>Carrot seeds</p><small>Cost 5G · sells for 10G</small></div>
+        <p class="how-to">Click soil to plant. Crops take 90 seconds. When a carrot glows, click it to harvest.</p>
+        <a href="{{ url_for('auth.logout') }}" class="logout-btn">Log out</a>
+    </aside>
+    <section class="farm-area">
+        <div class="farm-heading"><div><p class="eyebrow">SEASON ONE</p><h2>YOUR FARM</h2></div><span id="farm-status">Ready to grow</span></div>
+        <div class="farm-grid">
+        {% for plot in plots %}
+            <button class="plot {% if plot.is_ready %}is-ready{% endif %}" id="plot-{{ plot.id }}" data-id="{{ plot.id }}" data-state="{{ plot.state }}" type="button" aria-label="Farm plot {{ loop.index }}">
+                <img class="terrain-layer" src="{{ url_for('static', filename='sprites/terrain/grass.png') }}" alt="">
+                <img class="soil-layer" src="{{ url_for('static', filename='sprites/terrain/soil.png') }}" alt="">
+                {% if plot.crop %}<img class="crop-layer" src="{{ url_for('static', filename='sprites/crops/' ~ plot.crop.name|lower ~ '/stage' ~ plot.stage ~ '.png') }}" alt="{{ plot.crop.name }}">{% endif %}
+            </button>
+        {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

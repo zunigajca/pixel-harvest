@@ -1,10 +1,10 @@
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from . import db
 
 
 class User(UserMixin, db.Model):
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
 
@@ -13,6 +13,12 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
 
     gold = db.Column(db.Integer, default=100)
+
+    plots = db.relationship(
+        "Plot",
+        backref="owner",
+        lazy=True
+    )
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

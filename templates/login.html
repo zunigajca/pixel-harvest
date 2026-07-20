@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-card">
+    <p class="eyebrow">WELCOME BACK</p>
+    <h1>LOG IN</h1>
+    <form method="POST" class="pixel-form">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" class="pixel-input" autocomplete="username" required>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" class="pixel-input" autocomplete="current-password" required>
+        <button type="submit" class="pixel-button pixel-button-primary">Enter farm</button>
+    </form>
+    <p class="form-footnote">New around here? <a href="{{ url_for('auth.register') }}">Create an account</a></p>
+</section>
+{% endblock %}

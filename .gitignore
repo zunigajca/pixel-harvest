@@ -1,0 +1,84 @@
+# ==========================
+# Python
+# ==========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==========================
+# Virtual Environment
+# ==========================
+venv/
+.venv/
+env/
+ENV/
+
+# ==========================
+# Environment Variables
+# ==========================
+.env
+
+# ==========================
+# Flask
+# ==========================
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# ==========================
+# Migrations (Optional)
+# Uncomment if you don't want to track migrations
+# migrations/
+
+# ==========================
+# IDE
+# ==========================
+.vscode/
+.idea/
+
+# ==========================
+# Operating System
+# ==========================
+.DS_Store
+Thumbs.db
+
+# ==========================
+# Logs
+# ==========================
+*.log
+
+# ==========================
+# Testing
+# ==========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==========================
+# Type Checkers
+# ==========================
+.mypy_cache/
+.pyre/
+.pytype/
+
+# ==========================
+# Jupyter
+# ==========================
+.ipynb_checkpoints/
+
+# ==========================
+# Node (if added later)
+# ==========================
+node_modules/
+
+# ==========================
+# Static Build Files
+# ==========================
+*.map

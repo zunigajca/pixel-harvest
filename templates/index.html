@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="landing-card">
+    <p class="eyebrow">A LITTLE FARM, IN YOUR POCKET</p>
+    <h1>PIXEL<br>HARVEST</h1>
+    <p class="lead">Plant carrots, watch them grow in real time, and harvest a cozier farm—morning, noon, or night.</p>
+    <div class="landing-actions">
+        <a href="{{ url_for('auth.register') }}" class="pixel-button pixel-button-primary">Start farming</a>
+        <a href="{{ url_for('auth.login') }}" class="pixel-button">Log in</a>
+    </div>
+</section>
+{% endblock %}
