@@ -40,9 +40,16 @@ def create_app():
     def init_game():
         """Create the database tables and starter crop catalogue."""
         db.create_all()
-        if not Crop.query.filter_by(name="Carrot").first():
-            db.session.add(Crop(name="Carrot", buy_price=5, sell_price=10,
-                                grow_time=90, sprite_sheet="carrot", stages=4))
+        catalogue = [
+            ("Carrot", 5, 10, 90, "carrot"),
+            ("Potato", 12, 24, 150, "potato"),
+            ("Corn", 25, 50, 240, "corn"),
+        ]
+        for name, buy, sell, growth, sprite in catalogue:
+            if not Crop.query.filter_by(name=name).first():
+                db.session.add(Crop(name=name, buy_price=buy, sell_price=sell,
+                                    grow_time=growth, sprite_sheet=sprite, stages=4))
+        if db.session.new:
             db.session.commit()
         print("Pixel Harvest is ready.")
 

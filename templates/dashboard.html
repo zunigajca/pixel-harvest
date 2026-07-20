@@ -1,27 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="game-container" id="game" data-crop-id="{{ carrot.id if carrot else 1 }}">
-    <aside class="sidebar">
-        <p class="eyebrow">YOUR HOMESTEAD</p>
-        <h1>PIXEL<br>HARVEST</h1>
-        <p class="farmer-name">{{ current_user.username }}</p>
-        <div class="stat-box"><span>GOLD</span><strong id="gold">{{ current_user.gold }}</strong></div>
-        <div class="stat-box"><span>LOCAL TIME</span><strong id="device-time">--:--</strong><small id="time-period">SYNCING...</small></div>
-        <div class="inventory"><span>SEED BAG</span><p>Carrot seeds</p><small>Cost 5G · sells for 10G</small></div>
-        <p class="how-to">Click soil to plant. Crops take 90 seconds. When a carrot glows, click it to harvest.</p>
-        <a href="{{ url_for('auth.logout') }}" class="logout-btn">Log out</a>
-    </aside>
-    <section class="farm-area">
-        <div class="farm-heading"><div><p class="eyebrow">SEASON ONE</p><h2>YOUR FARM</h2></div><span id="farm-status">Ready to grow</span></div>
-        <div class="farm-grid">
-        {% for plot in plots %}
-            <button class="plot {% if plot.is_ready %}is-ready{% endif %}" id="plot-{{ plot.id }}" data-id="{{ plot.id }}" data-state="{{ plot.state }}" type="button" aria-label="Farm plot {{ loop.index }}">
-                <img class="terrain-layer" src="{{ url_for('static', filename='sprites/terrain/grass.png') }}" alt="">
-                <img class="soil-layer" src="{{ url_for('static', filename='sprites/terrain/soil.png') }}" alt="">
-                {% if plot.crop %}<img class="crop-layer" src="{{ url_for('static', filename='sprites/crops/' ~ plot.crop.name|lower ~ '/stage' ~ plot.stage ~ '.png') }}" alt="{{ plot.crop.name }}">{% endif %}
-            </button>
-        {% endfor %}
-        </div>
-    </section>
+<div class="game-container" id="game" data-crop-id="{{ crops[0].id if crops else 1 }}">
+  <aside class="sidebar">
+    <p class="eyebrow">YOUR HOMESTEAD</p><h1>PIXEL<br>HARVEST</h1><p class="farmer-name">{{ current_user.username }}</p>
+    <div class="stat-box"><span>GOLD</span><strong id="gold">{{ current_user.gold }}</strong></div>
+    <div class="stat-box"><span>LOCAL TIME</span><strong id="device-time">--:--</strong><small id="time-period">SYNCING...</small></div>
+    <div class="inventory"><span>SEED BAG · TIER <b id="seed-tier">{{ current_user.seed_tier }}</b></span><p id="selected-seed">Carrot seeds</p><small id="seed-details">Cost 5G · sells for 10G</small></div>
+    <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true">SOUND & BGM: ON</button>
+    <p class="how-to">Select seeds, then click soil. Invest your harvest in upgrades and let the farm keeper run your idle farm.</p><a href="{{ url_for('auth.logout') }}" class="logout-btn">Log out</a>
+  </aside>
+  <section class="farm-area">
+    <div class="farm-heading"><div><p class="eyebrow">SEASON ONE</p><h2>YOUR FARM</h2></div><span id="farm-status">Choose seeds, then grow</span></div>
+    <div class="farm-grid" id="farm-grid">{% for plot in plots %}<button class="plot {% if plot.is_ready %}is-ready{% endif %}" id="plot-{{ plot.id }}" data-id="{{ plot.id }}" data-state="{{ plot.state }}" type="button" aria-label="Farm plot {{ loop.index }}"><span class="terrain-layer"></span><span class="soil-layer"></span>{% if plot.crop %}<span class="crop-layer crop-{{ plot.crop.name|lower }} stage-{{ plot.stage }}" aria-label="{{ plot.crop.name }}"></span>{% endif %}</button>{% endfor %}</div>
+    <section class="shop" aria-label="Seed shop"><div><p class="eyebrow">TOWN MARKET</p><h2>SEED SHOP</h2></div><div class="shop-items">{% for crop in crops %}<button class="shop-item {% if loop.first %}selected{% endif %}" type="button" data-crop-id="{{ crop.id }}" data-crop-name="{{ crop.name }}" data-buy="{{ crop.buy_price }}" data-sell="{{ crop.sell_price }}" {% if loop.index > current_user.seed_tier %}disabled{% endif %}><strong>{{ crop.name }}</strong><small>{% if loop.index > current_user.seed_tier %}Unlock at seed tier {{ loop.index }}{% else %}{{ crop.buy_price }}G seed · sells {{ crop.sell_price }}G{% endif %}</small><small>Grows in {{ crop.grow_time }}s</small></button>{% endfor %}</div></section>
+    <section class="shop upgrades" aria-label="Farm upgrades"><div><p class="eyebrow">FARM PROGRESS</p><h2>UPGRADES & PERKS</h2></div><div class="shop-items"><button class="shop-item upgrade" data-action="plots" type="button"><strong>MORE LAND</strong><small>+4 farm plots</small><small id="plot-upgrade">{{ 100 * current_user.plot_level }}G · level {{ current_user.plot_level }}</small></button><button class="shop-item upgrade" data-action="seeds" type="button" {% if current_user.seed_tier >= 3 %}disabled{% endif %}><strong>SEED LAB</strong><small>Unlock a stronger crop +25% harvest value</small><small id="seed-upgrade">{% if current_user.seed_tier < 3 %}{{ 125 * current_user.seed_tier }}G{% else %}MAXED{% endif %}</small></button><button class="shop-item upgrade" data-action="farmkeeper" type="button" {% if current_user.farmkeeper_level %}disabled{% endif %}><strong>FARM KEEPER</strong><small>Auto-harvests and replants every 10 seconds</small><small id="keeper-upgrade">{% if current_user.farmkeeper_level %}HIRED{% else %}350G{% endif %}</small></button></div></section>
+  </section>
 </div>
 {% endblock %}

@@ -14,6 +14,12 @@ class User(UserMixin, db.Model):
 
     gold = db.Column(db.Integer, default=100)
 
+    plot_level = db.Column(db.Integer, default=1, nullable=False)
+
+    seed_tier = db.Column(db.Integer, default=1, nullable=False)
+
+    farmkeeper_level = db.Column(db.Integer, default=0, nullable=False)
+
     plots = db.relationship(
         "Plot",
         backref="owner",

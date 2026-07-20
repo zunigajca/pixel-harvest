@@ -26,5 +26,5 @@ def dashboard():
     return render_template(
         "dashboard.html",
         plots=plots,
-        carrot=Crop.query.filter_by(name="Carrot").first()
+        crops=Crop.query.order_by(Crop.buy_price).all()
     )
